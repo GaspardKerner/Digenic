@@ -357,8 +357,7 @@ index2<-function(i){
 }
 
 
-# Esta es la funcion a la que le paso todos los argumentos y que va devolver el archivo final
-# con todos los pvalores para modelos dominante y recesivo, ajustado o no.
+# Function called in my_analysis_di.r
 analysis<-function(outfile=NULL,Gnomad_AF1=0.001,Gnomad_AF2=0.001,set=c("frameshift","stop_gained","stop_lost","start_lost","splice_donor","splice_acceptor"),
                    pheno=NULL,covariates=NULL,set_genes1=c("IFNG"),set_genes2=c("IL12RB1"),ncore=4){
   if(is.null(pheno)) stop("phenotype is missing")
@@ -534,8 +533,7 @@ analysis<-function(outfile=NULL,Gnomad_AF1=0.001,Gnomad_AF2=0.001,set=c("framesh
   })
   registerDoParallel(cl)
   
-  ## liste tiene en cada elemento las posiciones de las variantes que pertenecen a cada gen en el orden 
-  ## que tienen los genes en g2test
+  
   liste1<-parLapply(cl,g2test1,index1)
   liste2<-parLapply(cl,g2test2,index2)
   
@@ -543,7 +541,7 @@ analysis<-function(outfile=NULL,Gnomad_AF1=0.001,Gnomad_AF2=0.001,set=c("framesh
   
   resultpar<-foreach(i=liste1,.combine=rbind,.packages="SeqArray") %:% foreach(j=liste_new,.combine=rbind,.packages="SeqArray") %dopar% {CAST(i,j)}
   
-  write.table(resultpar,file=paste(dir,"/di/",feno,"/pvalues/",outfile,".out",sep=""),row.names=F,col.names=T,quote=F,sep="\t")
+  write.table(resultpar,file=paste(dir,"/",outfile,".out",sep=""),row.names=F,col.names=T,quote=F,sep="\t")
   stopCluster(cl)
   return(resultpar)
 }
