@@ -43,7 +43,7 @@ CAST<-function(i,j){
   chr2=NA
   colnames(phenotype)[1]="id"
   #get data for gene 1 and 2
-  gds<-seqOpen(paste(dir,"/data/",vcf,".gds",sep=""))
+  gds<-seqOpen(paste(dir,"/",vcf,".gds",sep=""))
   seqSetFilter(gds,variant.id=i,verbose=FALSE)
   genotype1<-2-seqGetData(gds,"$dosage")
   position<-seqGetData(gds,"position")
@@ -60,7 +60,7 @@ CAST<-function(i,j){
   seqResetFilter(gds,verbose=FALSE)
   seqClose(gds)
   
-  gds.all<-seqOpen(paste(dir,"/data/",vcf.all,".gds",sep=""))
+  gds.all<-seqOpen(paste(dir,"/",vcf.all,".gds",sep=""))
   seqSetFilter(gds.all,variant.id=j,verbose=FALSE)
   genotype2<-2-seqGetData(gds.all,"$dosage")
   position<-seqGetData(gds,"position")
@@ -84,7 +84,7 @@ CAST<-function(i,j){
   }
   
   
-  # inds to include. Inds with a 2 in the "aff" column
+  # inds to include. Inds with a 2 in the "aff" column (so cases)
   inds.include.1.cases = !is.na(phenolist) & phenolist==2
   
   #estimate alt all freq
@@ -359,7 +359,7 @@ index2<-function(i){
 
 # Function called in my_analysis_di.r
 analysis<-function(outfile=NULL,Gnomad_AF1=0.001,Gnomad_AF2=0.001,set=c("frameshift","stop_gained","stop_lost","start_lost","splice_donor","splice_acceptor"),
-                   pheno=NULL,covariates=NULL,set_genes1=c("IFNG"),set_genes2=c("IL12RB1"),ncore=4){
+                   pheno=NULL,covariates=NULL,set_genes1=c("IFNG"),set_genes2=c("IL12RB1"),ncore=1){
   if(is.null(pheno)) stop("phenotype is missing")
   if(is.null(outfile)) outfile<-"Rcast.out"
 
@@ -375,7 +375,7 @@ analysis<-function(outfile=NULL,Gnomad_AF1=0.001,Gnomad_AF2=0.001,set=c("framesh
                         GnomadE_asj>=(1-Gnomad_AF1) & GnomadG_asj>=(1-Gnomad_AF1) &
                         GnomadE_fin>=(1-Gnomad_AF1) & GnomadG_fin>=(1-Gnomad_AF1) &
                         GnomadE_sas>=(1-Gnomad_AF1))) &
-                      # call-rate gnomAD
+                      # call-rate gnomAD. Update numbers if needed.
                       ((GnomadE_AC==0) | 
                          (GnomadE_AC>0 & GnomadE_AN>201196)) &
                       ((GnomadG_AC==0) | 
@@ -516,7 +516,7 @@ analysis<-function(outfile=NULL,Gnomad_AF1=0.001,Gnomad_AF2=0.001,set=c("framesh
     g2test2<-names(table(gene.all[variant2]))
   }
   #Get phenotype
-  gds <- seqOpen(paste(dir,"/data/",vcf,".gds",sep=""))
+  gds <- seqOpen(paste(dir,"/",vcf,".gds",sep=""))
   id<-seqGetData(gds,"sample.id")
   phenolist<-phenotype[as.factor(id),pheno]
   seqClose(gds)
@@ -529,7 +529,7 @@ analysis<-function(outfile=NULL,Gnomad_AF1=0.001,Gnomad_AF2=0.001,set=c("framesh
   clusterExport(cl=cl,varlist=c("gene","variant1","variant2","phenotype","phenolist","pheno","id","covar","dir","vcf","vcf.all","gene.all","covariates","num"), envir=environment())
   clusterEvalQ(cl, {
     library("SeqArray")
-    source(paste(dir,"/scriptR/my_Rfunction_di.r",sep=""))
+    source(paste(dir,"/my_Rfunction_di.r",sep=""))
   })
   registerDoParallel(cl)
   
