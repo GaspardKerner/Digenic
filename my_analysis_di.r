@@ -1,9 +1,10 @@
+## Copyright 2020 HGID Institut Imagine, Gaspard Kerner (gakerner@pasteur.fr) 
 #!/usr/bin/env Rscript
 args = commandArgs(trailingOnly=TRUE)
 
 # Tab- or space-separated input phenotype file: One line per individual and J columns where J is >=2 (Sample_name, affected status (column_name= "aff"), J-2 covariates (one per column)). 
-# Individual identifiers are identical to those of the input genotype file.
-# Include NA in "aff" column to exclude individuals from the analysis
+# Individual identifiers are identical to those in the input genotype file.
+# NA label in "aff" column automatically excludes individuals from the analysis
 feno=args[1]
 
 # Parallelisation is performed either with doParallel package (loop is split using n cores) or by splitting input genotype files into several smaller files.
@@ -135,7 +136,7 @@ GnomadG_fin.all<-seqGetData(gds.all,"annotation/info/AF_G_fin")$data
 seqClose(gds.all)
 #Define variant sets
 
-# You can define a set of variant annotations so to group variants according to their annotation. LOF are high impact annotation while MISSLOF
+# You can define a set of variant annotations in order to group variants according to their annotation. LOF are high impact annotation while MISSLOF
 # includes also missense or inframe annotations.
 LOF=c("frameshift","stop_gained","stop_lost","start_lost","splice_donor","splice_acceptor")
 MISSLOF=c("inframe","missense","exon_loss","initiator_codon","frameshift","stop_gained","stop_lost","start_lost","splice_donor","splice_acceptor")
@@ -143,6 +144,6 @@ MISSLOF=c("inframe","missense","exon_loss","initiator_codon","frameshift","stop_
 #Run the analysis
 
 # Parameters for the digenic function: MAF thresholds for variant aggregation, variant annotation, column for affected status in phenotype file and column for covariates in phenotype file.
-# Analysis can also be restricted to a set of genes for each of the two genotype files (set_genes1, set_genes2). Cores are used if parallelisation inside R is applied.
+# Analysis can also be restricted to a set of genes for each of the two genotype files (set_genes1, set_genes2). Cores are used if parallelisation inside R is applied. Otherwise to be set to 1.
 res<-analysis(outfile="Outfile_name",Gnomad_AF1=0.02,Gnomad_AF2=0.02,set=LOF,pheno="aff",
               covariates=c("pc1","pc2","pc3"),set_genes1="ALL",set_genes2="ALL",ncore=48)
