@@ -43,7 +43,7 @@ CAST<-function(i,j){
   chr2=NA
   colnames(phenotype)[1]="id"
   #get data for gene 1 and 2
-  gds<-seqOpen(paste(dir,"/",vcf,".gds",sep=""))
+  gds<-seqOpen(paste(dir,"/data/",vcf,".gds",sep=""))
   seqSetFilter(gds,variant.id=i,verbose=FALSE)
   genotype1<-2-seqGetData(gds,"$dosage")
   position<-seqGetData(gds,"position")
@@ -60,7 +60,7 @@ CAST<-function(i,j){
   seqResetFilter(gds,verbose=FALSE)
   seqClose(gds)
   
-  gds.all<-seqOpen(paste(dir,"/",vcf.all,".gds",sep=""))
+  gds.all<-seqOpen(paste(dir,"/data/",vcf.all,".gds",sep=""))
   seqSetFilter(gds.all,variant.id=j,verbose=FALSE)
   genotype2<-2-seqGetData(gds.all,"$dosage")
   position<-seqGetData(gds,"position")
@@ -516,7 +516,7 @@ analysis<-function(outfile=NULL,Gnomad_AF1=0.001,Gnomad_AF2=0.001,set=c("framesh
     g2test2<-names(table(gene.all[variant2]))
   }
   #Get phenotype
-  gds <- seqOpen(paste(dir,"/",vcf,".gds",sep=""))
+  gds <- seqOpen(paste(dir,"/data/",vcf,".gds",sep=""))
   id<-seqGetData(gds,"sample.id")
   phenolist<-phenotype[as.factor(id),pheno]
   seqClose(gds)
@@ -529,7 +529,7 @@ analysis<-function(outfile=NULL,Gnomad_AF1=0.001,Gnomad_AF2=0.001,set=c("framesh
   clusterExport(cl=cl,varlist=c("gene","variant1","variant2","phenotype","phenolist","pheno","id","covar","dir","vcf","vcf.all","gene.all","covariates","num"), envir=environment())
   clusterEvalQ(cl, {
     library("SeqArray")
-    source(paste(dir,"/my_Rfunction_di.r",sep=""))
+    source(paste(dir,"/data/my_Rfunction_di.r",sep=""))
   })
   registerDoParallel(cl)
   
