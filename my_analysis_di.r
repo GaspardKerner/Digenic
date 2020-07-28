@@ -141,7 +141,7 @@ seqClose(gds.all)
 LOF=c("frameshift","stop_gained","stop_lost","start_lost","splice_donor","splice_acceptor")
 MISSLOF=c("inframe","missense","exon_loss","initiator_codon","frameshift","stop_gained","stop_lost","start_lost","splice_donor","splice_acceptor")
 
-#Run the analysis
+#Run the analysis. Function is defined in my_Rfunction_di.r
 
 # Parameters for the digenic function: MAF thresholds for variant aggregation, variant annotation, column for affected status in phenotype file and column for covariates in phenotype file.
 # Analysis can also be restricted to a set of genes for each of the two genotype files (set_genes1, set_genes2). Cores are used if parallelisation inside R is applied. Otherwise to be set to 1.
