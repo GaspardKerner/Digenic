@@ -4,14 +4,7 @@ args = commandArgs(trailingOnly=TRUE)
 feno=args[1]
 vcf=args[2]
 vcf.rare=args[3]
-vcf.number=args[4]
-direct=args[5]
-
-feno="test"
-vcf="test.common"
-vcf.rare="test.rare"
-vcf.number=""
-direct="/volumes/vol002/Backup_vol001/dbGAP/cranyio2"
+direct=args[4]
 
 library("SeqArray")
 library("foreach")
