@@ -1,29 +1,19 @@
 CAST<-function(i,j){
   #initialize variables
-  pv.dom.dom=NA
-  pw.dom.dom.noAdj=NA
-  m1.dom1=NA
-  n1.dom1=NA
-  m1.dom2=NA
-  n1.dom2=NA
-  pv.dom.dom=NA
-  pw.dom.dom.noAdj=NA
-  m1.rec1=NA
-  n1.rec1=NA
-  m1.rec2=NA
-  n1.rec2=NA
+  pv.dom.dom=NA # Likelihood Ratio Test (LRT) p-value for a (Gene/variant 1) dominant vs (Gene/variant 2) dominant digenic analysis adjusted with given covariates (e.g. principal components, see pheno file)
+  pw.dom.dom.noAdj=NA # Likelihood Ratio Test (LRT) p-value for a (Gene/variant 1) dominant vs (Gene/variant 2) dominant digenic analysis without adjustment
+  m1.dom1=NA # Gives the number of carriers under a dominant model at genomic location 1
+  n1.dom1=NA # Gives the number of non-carriers under a dominant model at genomic location 1 (i.e. individuals that do not harbor any variant in genomic location 1)
+  m1.dom2=NA # Gives the number of carriers under a dominant model at genomic location 2
+  n1.dom2=NA # Gives the number of carriers under a dominant model at genomic location 2 (i.e. individuals that do not harbor any variant in genomic location 2)
+  n1.dom.dom12=NA # Gives the number of "double carriers" under a dominant vs dominant model, i.e. the number of individuals harboring variants at the 2 tested genomic locations.
   m1.dom.dom12=NA
-  m1.dom.dom12=NA
-  y=NULL
-  nvardom1=NA
-  nvardom2=NA
-  nvarrec1=NA
-  nvarrec2=NA
-  dom1=NULL
-  or_0pc_dom=NA
-  or_3pc_dom=NA
-  or_0pc_rec=NA
-  or_3pc_rec=NA
+  y=NULL # phenotype vector
+  nvardom1=NA # Number of variants contributing to genomic location 1 (e.g. number of variants tested within genomic location 1) when working under a dominant model
+  nvardom2=NA # Number of variants contributing to genomic location 2 (e.g. number of variants tested within genomic location 2) when working under a dominant model
+  dom1=NULL # matrix with carrier status for all cases for the given gene under study. Gives the number of cases tested.
+  or_0pc_dom=NA # Odds ratio for the interaction effect between the 2 genomic regions under a dominant vs dominant model without adjusment on covariates
+  or_3pc_dom=NA # Odds ratio for the interaction effect between the 2 genomic regions under a dominant vs dominant model with adjusment on covariates
   colnames(phenotype)=c("id","aff","pc1","pc2","pc3")
   #get the data for gene 1 and 2
   gds<-seqOpen(paste(direct,"/vcf/",vcf,".gds",sep=""))
@@ -105,7 +95,7 @@ CAST<-function(i,j){
       m1.dom2 = sum(dom2)
       n1.dom2 = length(which(dom2 == 0))
       
-      # inter
+      # double carriers
       dom.dom12 = dom1*dom2
       m1.dom.dom12 = sum(dom.dom12)
       
@@ -146,6 +136,8 @@ CAST<-function(i,j){
   }else{
     
   }
+                              
+  # Output. Columns as in the output file. A small description for each column can be found at the begining of the script.
   
   res<-cbind(chr=chr,pos=pos,all=all,Gnomad_AF=Gnomad,cohort_AF=AF,effect=EFFECT,HGVS_C=HGVS_C,HGVS_P=HGVS_P,
              genename1= gene[i][1], genename2= gene.rare[j][1], LD= dist, sample.size = length(dom1),
