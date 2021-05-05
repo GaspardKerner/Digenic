@@ -6,8 +6,7 @@ CAST<-function(i,j){
   n1.dom1=NA # Gives the number of non-carriers under a dominant model at genomic location 1 (i.e. individuals that do not harbor any variant in genomic location 1)
   m1.dom2=NA # Gives the number of carriers under a dominant model at genomic location 2
   n1.dom2=NA # Gives the number of carriers under a dominant model at genomic location 2 (i.e. individuals that do not harbor any variant in genomic location 2)
-  n1.dom.dom12=NA # Gives the number of "double carriers" under a dominant vs dominant model, i.e. the number of individuals harboring variants at the 2 tested genomic locations.
-  m1.dom.dom12=NA
+  m1.dom.dom12=NA # Gives the number of "double carriers" under a dominant vs dominant model, i.e. the number of individuals harboring variants at the 2 tested genomic locations.
   y=NULL # phenotype vector
   nvardom1=NA # Number of variants contributing to genomic location 1 (e.g. number of variants tested within genomic location 1) when working under a dominant model
   nvardom2=NA # Number of variants contributing to genomic location 2 (e.g. number of variants tested within genomic location 2) when working under a dominant model
