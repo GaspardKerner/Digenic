@@ -1,7 +1,7 @@
 # Digenic
 
 Instructions on how to use Rscripts are available on the Rscripts themselves. 
-A double loop parallelisation is incorporated to optimize pairwise interaction analyses. 
+A double loop parallelization is incorporated to optimize pairwise interaction analyses. 
 However, it can be faster to adopt manual parallelization by splitting genotype input files and running parallel jobs (one per subfile). 
 More detail information and updated scripts are expected to be available in the near future.
 
