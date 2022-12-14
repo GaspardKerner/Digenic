@@ -179,7 +179,7 @@ analysis<-function(outfile=NULL,Gnomad_AF1_low=0.1,Gnomad_AF1_up=0.9,Gnomad_AF2=
   
   # Filter variants
   variant1 = which(Gnomad<=Gnomad_AF1_up & Gnomad>=Gnomad_AF1_low & !grepl("WARN",WARN))
-  variant2 = which(!grepl("WARN",WARN.rare))
+  variant2 = which(Gnomad.rare<=Gnomad_AF2 & !grepl("WARN",WARN.rare))
   g2test2<-names(table(gene.rare[variant2]))
   
   #Get phenotype
